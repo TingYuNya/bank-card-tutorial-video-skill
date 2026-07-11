@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="500" viewBox="0 0 1400 500" role="img" aria-labelledby="title desc">
+  <title id="title">成片抽帧验收 contact sheet</title>
+  <desc id="desc">两个银行卡教程场景缩略图及其场景编号和时间点。</desc>
+  <rect width="1400" height="500" fill="#ffffff"/>
+  <g transform="translate(40 35)">
+    <rect width="620" height="350" rx="24" fill="#eef2f7"/>
+    <text x="310" y="58" text-anchor="middle" font-family="system-ui, PingFang SC, sans-serif" font-size="32" font-weight="750" fill="#111827">第一步：登录账户</text>
+    <rect x="150" y="88" width="320" height="180" rx="24" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+    <rect x="205" y="124" width="210" height="38" rx="10" fill="#f8fafc" stroke="#dbe3ee"/>
+    <rect x="220" y="188" width="180" height="55" rx="28" fill="#2563eb"/>
+    <text x="310" y="224" text-anchor="middle" font-family="system-ui, PingFang SC, sans-serif" font-size="27" font-weight="700" fill="#fff">登录</text>
+    <rect x="55" y="287" width="510" height="48" rx="12" fill="#111827" fill-opacity=".65"/>
+    <text x="310" y="319" text-anchor="middle" font-family="system-ui, PingFang SC, sans-serif" font-size="21" fill="#fff">先打开银行应用，并登录账户。</text>
+    <text x="0" y="405" font-family="ui-monospace, monospace" font-size="18" fill="#475569">visual-001 @ 00:00.60</text>
+  </g>
+  <g transform="translate(740 35)">
+    <rect width="620" height="350" rx="24" fill="#eef2f7"/>
+    <text x="310" y="58" text-anchor="middle" font-family="system-ui, PingFang SC, sans-serif" font-size="32" font-weight="750" fill="#111827">第二步：激活卡片</text>
+    <rect x="150" y="88" width="320" height="180" rx="24" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
+    <rect x="197" y="142" width="226" height="68" rx="34" fill="#2563eb"/>
+    <text x="310" y="186" text-anchor="middle" font-family="system-ui, sans-serif" font-size="25" font-weight="700" fill="#fff">Activate Card</text>
+    <rect x="55" y="287" width="510" height="48" rx="12" fill="#111827" fill-opacity=".65"/>
+    <text x="310" y="319" text-anchor="middle" font-family="system-ui, PingFang SC, sans-serif" font-size="21" fill="#fff">进入卡片页面，点击 Activate Card。</text>
+    <text x="0" y="405" font-family="ui-monospace, monospace" font-size="18" fill="#475569">visual-002 @ 00:01.80</text>
+  </g>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <rect width="1440" height="900" rx="28" fill="#EEF2F7"/>
+  <rect width="1440" height="90" fill="#FFFFFF"/><text x="54" y="56" font-family="Arial,'Noto Sans SC',sans-serif" font-size="30" font-weight="800" fill="#111827">银行卡教程分镜审核</text><text x="1030" y="54" font-family="Arial,'Noto Sans SC',sans-serif" font-size="18" fill="#2563EB">保存审核</text>
+  <rect x="54" y="126" width="1332" height="82" rx="18" fill="#FFFFFF"/><text x="82" y="162" font-family="Arial,'Noto Sans SC',sans-serif" font-size="22" font-weight="750" fill="#111827">示例银行卡激活教程</text><text x="82" y="190" font-family="Arial,'Noto Sans SC',sans-serif" font-size="16" fill="#64748B">3 个分镜，5 条事实核验，3 张图片已进入隐私检查清单</text>
+  <g transform="translate(54 238)">
+    <rect width="1332" height="280" rx="20" fill="#FFFFFF"/>
+    <rect x="22" y="22" width="500" height="236" rx="16" fill="#111827"/>
+    <rect x="165" y="38" width="210" height="204" rx="24" fill="#F8FAFC"/>
+    <rect x="184" y="62" width="172" height="22" rx="11" fill="#CBD5E1"/>
+    <rect x="184" y="103" width="172" height="76" rx="15" fill="#DBEAFE"/>
+    <rect x="208" y="131" width="124" height="16" rx="8" fill="#2563EB"/>
+    <rect x="184" y="197" width="126" height="15" rx="8" fill="#CBD5E1"/>
+    <text x="558" y="50" font-family="Arial,'Noto Sans SC',sans-serif" font-size="15" fill="#64748B">01 · visual-001 · image</text>
+    <text x="558" y="94" font-family="Arial,'Noto Sans SC',sans-serif" font-size="28" font-weight="800" fill="#111827">登录银行官方应用</text>
+    <text x="558" y="138" font-family="Arial,'Noto Sans SC',sans-serif" font-size="20" fill="#334155">先打开银行官方应用，使用已经注册的账户登录。</text>
+    <rect x="558" y="164" width="116" height="28" rx="14" fill="#E8EFFF"/><text x="616" y="184" text-anchor="middle" font-family="Arial,'Noto Sans SC',sans-serif" font-size="13" fill="#1D4ED8">任务：展示入口</text>
+    <rect x="686" y="164" width="118" height="28" rx="14" fill="#E8EFFF"/><text x="745" y="184" text-anchor="middle" font-family="Arial,'Noto Sans SC',sans-serif" font-size="13" fill="#1D4ED8">claim-001</text>
+    <rect x="558" y="210" width="720" height="42" rx="10" fill="#F8FAFC" stroke="#CBD5E1"/><text x="574" y="237" font-family="Arial,'Noto Sans SC',sans-serif" font-size="15" fill="#94A3B8">审核备注：按钮位置、图片选择、事实表述、隐私遮挡或节奏问题</text>
+  </g>
+  <g transform="translate(54 544)">
+    <rect width="1332" height="280" rx="20" fill="#FFFFFF"/>
+    <rect x="22" y="22" width="500" height="236" rx="16" fill="#111827"/>
+    <rect x="165" y="38" width="210" height="204" rx="24" fill="#F8FAFC"/>
+    <rect x="184" y="62" width="172" height="22" rx="11" fill="#CBD5E1"/>
+    <rect x="184" y="103" width="172" height="76" rx="15" fill="#DCFCE7"/>
+    <rect x="208" y="131" width="124" height="16" rx="8" fill="#059669"/>
+    <rect x="177" y="96" width="186" height="90" rx="16" fill="none" stroke="#EF4444" stroke-width="5"/>
+    <text x="558" y="50" font-family="Arial,'Noto Sans SC',sans-serif" font-size="15" fill="#64748B">02 · visual-002 · image</text>
+    <text x="558" y="94" font-family="Arial,'Noto Sans SC',sans-serif" font-size="28" font-weight="800" fill="#111827">选择 Activate Card</text>
+    <text x="558" y="138" font-family="Arial,'Noto Sans SC',sans-serif" font-size="20" fill="#334155">进入卡片管理页面后，找到 Activate Card。</text>
+    <rect x="558" y="164" width="138" height="28" rx="14" fill="#E8EFFF"/><text x="627" y="184" text-anchor="middle" font-family="Arial,'Noto Sans SC',sans-serif" font-size="13" fill="#1D4ED8">动作：focus</text>
+    <rect x="708" y="164" width="118" height="28" rx="14" fill="#E8EFFF"/><text x="767" y="184" text-anchor="middle" font-family="Arial,'Noto Sans SC',sans-serif" font-size="13" fill="#1D4ED8">claim-002</text>
+    <rect x="558" y="210" width="720" height="42" rx="10" fill="#FFF7ED"/><text x="574" y="237" font-family="Arial,'Noto Sans SC',sans-serif" font-size="15" fill="#9A3412">隐私检查已完成，画面中的账户信息已遮挡</text>
+  </g>
+</svg>

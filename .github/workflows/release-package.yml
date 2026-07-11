@@ -1,0 +1,36 @@
+name: Release package
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build public package
+        run: |
+          mkdir -p dist
+          python scripts/build_release.py --output "dist/bank-card-tutorial-video-skill-v$(cat VERSION).zip"
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bank-card-tutorial-video-skill-${{ github.ref_name }}
+          path: |
+            dist/*.zip
+            dist/*.sha256
+          if-no-files-found: error

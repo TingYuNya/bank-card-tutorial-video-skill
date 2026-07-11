@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="720" viewBox="0 0 1440 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EEF4FF"/>
+      <stop offset="0.55" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#E8F7F4"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#0F172A" flood-opacity="0.12"/></filter>
+  </defs>
+  <rect width="1440" height="720" rx="36" fill="url(#bg)"/>
+  <circle cx="1260" cy="100" r="190" fill="#DBEAFE" opacity="0.7"/>
+  <circle cx="140" cy="650" r="250" fill="#CCFBF1" opacity="0.65"/>
+  <g transform="translate(90 105)">
+    <rect width="590" height="510" rx="28" fill="#FFFFFF" filter="url(#shadow)"/>
+    <rect x="32" y="32" width="526" height="54" rx="14" fill="#F1F5F9"/>
+    <circle cx="58" cy="59" r="8" fill="#EF4444"/><circle cx="84" cy="59" r="8" fill="#F59E0B"/><circle cx="110" cy="59" r="8" fill="#10B981"/>
+    <rect x="50" y="126" width="170" height="254" rx="24" fill="#0F172A"/>
+    <rect x="66" y="146" width="138" height="214" rx="18" fill="#F8FAFC"/>
+    <rect x="82" y="166" width="106" height="18" rx="9" fill="#CBD5E1"/>
+    <rect x="82" y="204" width="106" height="82" rx="14" fill="#DBEAFE"/>
+    <rect x="96" y="229" width="78" height="12" rx="6" fill="#2563EB"/>
+    <rect x="82" y="307" width="106" height="18" rx="9" fill="#BFDBFE"/>
+    <rect x="82" y="335" width="74" height="11" rx="6" fill="#CBD5E1"/>
+    <path d="M248 196h142" stroke="#94A3B8" stroke-width="10" stroke-linecap="round"/>
+    <path d="M248 234h246" stroke="#CBD5E1" stroke-width="10" stroke-linecap="round"/>
+    <path d="M248 272h214" stroke="#CBD5E1" stroke-width="10" stroke-linecap="round"/>
+    <rect x="248" y="318" width="246" height="76" rx="18" fill="#EFF6FF" stroke="#93C5FD" stroke-width="3"/>
+    <path d="M274 344h128" stroke="#2563EB" stroke-width="10" stroke-linecap="round"/>
+    <path d="M274 370h178" stroke="#93C5FD" stroke-width="9" stroke-linecap="round"/>
+    <rect x="50" y="420" width="508" height="52" rx="14" fill="#0F172A"/>
+    <path d="M82 446h130" stroke="#F8FAFC" stroke-width="10" stroke-linecap="round"/>
+    <rect x="446" y="432" width="88" height="28" rx="14" fill="#2563EB"/>
+  </g>
+  <g transform="translate(760 132)">
+    <text x="0" y="44" font-family="Inter,Arial,'Noto Sans SC',sans-serif" font-size="26" font-weight="700" fill="#2563EB">AGENT VIDEO WORKFLOW</text>
+    <text x="0" y="110" font-family="Inter,Arial,'Noto Sans SC',sans-serif" font-size="58" font-weight="800" fill="#0F172A">银行卡教程视频 Skill</text>
+    <text x="0" y="166" font-family="Inter,Arial,'Noto Sans SC',sans-serif" font-size="24" fill="#475569">Markdown、图片、事实核验、隐私检查、真人感配音、字幕与成片</text>
+    <g transform="translate(0 220)">
+      <rect width="510" height="72" rx="18" fill="#FFFFFF" stroke="#DBEAFE" stroke-width="2"/>
+      <circle cx="38" cy="36" r="16" fill="#2563EB"/><text x="32" y="43" font-family="Arial" font-size="20" font-weight="700" fill="#FFFFFF">1</text>
+      <text x="72" y="44" font-family="Inter,Arial,'Noto Sans SC',sans-serif" font-size="22" font-weight="650" fill="#0F172A">审校文稿并核验官方来源</text>
+    </g>
+    <g transform="translate(0 310)">
+      <rect width="510" height="72" rx="18" fill="#FFFFFF" stroke="#D1FAE5" stroke-width="2"/>
+      <circle cx="38" cy="36" r="16" fill="#059669"/><text x="32" y="43" font-family="Arial" font-size="20" font-weight="700" fill="#FFFFFF">2</text>
+      <text x="72" y="44" font-family="Inter,Arial,'Noto Sans SC',sans-serif" font-size="22" font-weight="650" fill="#0F172A">生成分镜、配音、字幕和时间线</text>
+    </g>
+    <g transform="translate(0 400)">
+      <rect width="510" height="72" rx="18" fill="#FFFFFF" stroke="#E9D5FF" stroke-width="2"/>
+      <circle cx="38" cy="36" r="16" fill="#7C3AED"/><text x="32" y="43" font-family="Arial" font-size="20" font-weight="700" fill="#FFFFFF">3</text>
+      <text x="72" y="44" font-family="Inter,Arial,'Noto Sans SC',sans-serif" font-size="22" font-weight="650" fill="#0F172A">审核后确定性渲染最终 MP4</text>
+    </g>
+  </g>
+</svg>

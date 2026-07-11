@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security policy
+    url: https://github.com/TingYuNya/bank-card-tutorial-video-skill/security/policy
+    about: 安全漏洞和敏感信息泄露请使用私密安全报告

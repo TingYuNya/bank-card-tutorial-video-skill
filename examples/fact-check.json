@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "product": {
+    "bank": "Example Bank",
+    "card": "Example Card",
+    "region": "US",
+    "channel": "mobile app"
+  },
+  "claims": [
+    {
+      "id": "claim-001",
+      "claim": "卡片可以在应用内激活",
+      "category": "activation",
+      "region": "US",
+      "status": "verified",
+      "severity": "medium",
+      "source_title": "Official activation instructions",
+      "source_url": "https://example.com/official",
+      "checked_at": "2026-07-11",
+      "effective_date": null,
+      "notes": "示例数据，正式项目必须替换为真实官方来源",
+      "source_type": "official_help",
+      "source_official": true,
+      "source_language": "en-US"
+    }
+  ],
+  "summary": {
+    "verified": 1,
+    "qualified": 0,
+    "removed": 0,
+    "unresolved": 0
+  }
+}

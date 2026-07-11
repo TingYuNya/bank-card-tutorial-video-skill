@@ -1,0 +1,79 @@
+{
+  "aspectRatio": "16:9",
+  "canvas": {
+    "16:9": {"width": 1920, "height": 1080, "dpr": 1.0},
+    "9:16": {"width": 1080, "height": 1920, "dpr": 1.0},
+    "3:4": {"width": 1080, "height": 1440, "dpr": 1.5},
+    "4:3": {"width": 1440, "height": 1080, "dpr": 1.0}
+  },
+  "fps": 30,
+  "approvalMode": "user",
+  "factCheck": {
+    "officialSourcesOnly": true,
+    "allowChineseSources": false,
+    "blockHighRiskUnresolved": true,
+    "checkedAtRequired": true
+  },
+  "privacy": {
+    "requireReviewForEveryAsset": true,
+    "defaultRedactionStyle": "solid",
+    "showOnlyLastFour": true
+  },
+  "tts": {
+    "provider": "elevenlabs",
+    "language": "zh-CN",
+    "scenePauseSeconds": 0.25,
+    "alignment": "provider_or_openai_whisper",
+    "elevenlabs": {
+      "model": "eleven_multilingual_v2",
+      "outputFormat": "mp3_44100_128",
+      "stability": 0.55,
+      "similarityBoost": 0.75,
+      "style": 0.15,
+      "speakerBoost": true
+    },
+    "openai": {
+      "model": "gpt-4o-mini-tts",
+      "voice": "marin",
+      "responseFormat": "wav",
+      "instructions": "Speak natural Mandarin Chinese in a calm tutorial tone. Use clear pauses, accurate numbers, and natural conversational pacing. Avoid an advertising or newsreader style."
+    },
+    "azure": {
+      "voice": "zh-CN-XiaoxiaoNeural"
+    }
+  },
+  "subtitles": {
+    "font": "Noto Sans CJK SC",
+    "fontSize": 52,
+    "maxCharsPerLine": 16,
+    "maxLines": 2,
+    "bottomMargin": 72,
+    "outline": 3,
+    "backgroundOpacity": 0.52,
+    "highlightKeywords": true
+  },
+  "visual": {
+    "background": "#F4F6F8",
+    "foreground": "#111827",
+    "accent": "#2563EB",
+    "danger": "#DC2626",
+    "imagePadding": 56,
+    "safeTop": 64,
+    "safeBottom": 180,
+    "transitionSeconds": 0.22
+  },
+  "audio": {
+    "sampleRate": 48000,
+    "channels": 2,
+    "targetLufs": -16,
+    "backgroundMusic": null,
+    "backgroundMusicVolume": 0.08
+  },
+  "render": {
+    "frameFormat": "png",
+    "crf": 14,
+    "preset": "slow",
+    "audioBitrate": "192k",
+    "keepFrames": false
+  }
+}

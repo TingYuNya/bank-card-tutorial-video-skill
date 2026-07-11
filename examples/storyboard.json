@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "scenes": [
+    {
+      "id": "visual-001",
+      "narration_scene_id": "scene-001",
+      "kind": "image",
+      "asset": "source/assets/001-01-login.png",
+      "task": "展示登录入口",
+      "screen_text": "登录银行官方应用",
+      "motion": {
+        "type": "zoom_in",
+        "start_scale": 1,
+        "end_scale": 1.05
+      },
+      "overlays": [],
+      "redactions": [],
+      "source_claim_ids": [
+        "claim-001"
+      ]
+    },
+    {
+      "id": "visual-002",
+      "narration_scene_id": "scene-002",
+      "kind": "image",
+      "asset": "source/assets/002-02-activate.png",
+      "task": "圈出激活入口",
+      "screen_text": "选择 Activate Card",
+      "motion": {
+        "type": "focus",
+        "start_scale": 1,
+        "end_scale": 1.16,
+        "focus_x": 0.72,
+        "focus_y": 0.35
+      },
+      "overlays": [
+        {
+          "type": "rect",
+          "x": 0.58,
+          "y": 0.29,
+          "w": 0.3,
+          "h": 0.12,
+          "label": "Activate Card"
+        }
+      ],
+      "redactions": [],
+      "source_claim_ids": [
+        "claim-001"
+      ]
+    }
+  ]
+}

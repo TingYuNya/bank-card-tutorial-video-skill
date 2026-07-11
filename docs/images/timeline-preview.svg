@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <rect width="1440" height="900" rx="28" fill="#0F172A"/>
+  <rect x="34" y="34" width="1040" height="650" rx="22" fill="#020617"/>
+  <rect x="115" y="80" width="878" height="520" rx="18" fill="#F8FAFC"/>
+  <rect x="185" y="130" width="310" height="420" rx="28" fill="#111827"/>
+  <rect x="213" y="164" width="254" height="350" rx="22" fill="#FFFFFF"/>
+  <rect x="237" y="195" width="206" height="24" rx="12" fill="#CBD5E1"/>
+  <rect x="237" y="246" width="206" height="116" rx="18" fill="#DBEAFE"/>
+  <rect x="275" y="292" width="130" height="20" rx="10" fill="#2563EB"/>
+  <rect x="230" y="238" width="220" height="132" rx="20" fill="none" stroke="#EF4444" stroke-width="6"/>
+  <text x="555" y="232" font-family="Arial,'Noto Sans SC',sans-serif" font-size="18" font-weight="700" fill="#2563EB">STEP 02</text>
+  <text x="555" y="286" font-family="Arial,'Noto Sans SC',sans-serif" font-size="38" font-weight="800" fill="#0F172A">选择 Activate Card</text>
+  <text x="555" y="334" font-family="Arial,'Noto Sans SC',sans-serif" font-size="20" fill="#475569">按页面提示核对卡片信息</text>
+  <rect x="555" y="386" width="330" height="58" rx="14" fill="#EFF6FF"/><text x="720" y="422" text-anchor="middle" font-family="Arial,'Noto Sans SC',sans-serif" font-size="18" font-weight="700" fill="#1D4ED8">敏感信息已自动遮挡</text>
+  <rect x="34" y="712" width="1040" height="154" rx="20" fill="#111827" stroke="#263244"/>
+  <rect x="64" y="748" width="92" height="42" rx="10" fill="#2563EB"/><text x="110" y="775" text-anchor="middle" font-family="Arial,'Noto Sans SC',sans-serif" font-size="17" font-weight="700" fill="#FFFFFF">播放</text>
+  <text x="180" y="776" font-family="Arial" font-size="17" fill="#CBD5E1">00:18.420 / 01:36.800</text>
+  <rect x="390" y="762" width="620" height="8" rx="4" fill="#334155"/><rect x="390" y="762" width="245" height="8" rx="4" fill="#60A5FA"/><circle cx="635" cy="766" r="10" fill="#FFFFFF"/>
+  <rect x="1100" y="34" width="306" height="832" rx="22" fill="#111827"/>
+  <text x="1130" y="84" font-family="Arial,'Noto Sans SC',sans-serif" font-size="28" font-weight="800" fill="#E5E7EB">时间线审核</text>
+  <g font-family="Arial,'Noto Sans SC',sans-serif">
+    <rect x="1130" y="120" width="246" height="88" rx="14" fill="#1D4ED8" opacity=".22" stroke="#60A5FA"/>
+    <text x="1150" y="154" font-size="18" font-weight="700" fill="#FFFFFF">登录银行官方应用</text><text x="1150" y="184" font-size="14" fill="#94A3B8">00:00.000 至 00:08.200</text>
+    <rect x="1130" y="222" width="246" height="88" rx="14" fill="#0F172A" stroke="#334155"/>
+    <text x="1150" y="256" font-size="18" font-weight="700" fill="#FFFFFF">选择 Activate Card</text><text x="1150" y="286" font-size="14" fill="#94A3B8">00:08.200 至 00:22.100</text>
+    <rect x="1130" y="324" width="246" height="88" rx="14" fill="#0F172A" stroke="#334155"/>
+    <text x="1150" y="358" font-size="18" font-weight="700" fill="#FFFFFF">添加还款账户</text><text x="1150" y="388" font-size="14" fill="#94A3B8">00:22.100 至 00:38.600</text>
+    <rect x="1130" y="465" width="246" height="112" rx="12" fill="#0F172A" stroke="#334155"/><text x="1148" y="496" font-size="15" fill="#94A3B8">审核备注</text><text x="1148" y="530" font-size="16" fill="#CBD5E1">检查配音、字幕、画面</text><text x="1148" y="556" font-size="16" fill="#CBD5E1">和隐私遮挡是否同步</text>
+    <rect x="1130" y="610" width="246" height="48" rx="12" fill="#2563EB"/><text x="1253" y="641" text-anchor="middle" font-size="18" font-weight="750" fill="#FFFFFF">保存审核结果</text>
+  </g>
+</svg>

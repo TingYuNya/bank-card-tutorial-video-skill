@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Final Player</title>
+  <style>
+    :root {
+      --frame-width: 1920px;
+      --frame-height: 1080px;
+      --bg: #f4f6f8;
+      --fg: #111827;
+      --accent: #2563eb;
+      --danger: #dc2626;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; overflow: hidden; background: var(--bg); }
+    body { font-family: "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif; }
+    #stage {
+      position: relative;
+      width: var(--frame-width);
+      height: var(--frame-height);
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--fg);
+    }
+    #visualRoot { position: absolute; inset: 0; overflow: hidden; }
+    .media-group { position: absolute; transform-origin: 50% 50%; will-change: transform; }
+    .media-group img, .media-group video { width: 100%; height: 100%; display: block; object-fit: fill; }
+    .media-shadow { box-shadow: 0 24px 64px rgba(17, 24, 39, .16); border-radius: 22px; overflow: hidden; background: #fff; }
+    .screen-title {
+      position: absolute;
+      left: 6%; right: 6%; top: 3.5%;
+      text-align: center;
+      font-weight: 700;
+      font-size: clamp(32px, 3.1vw, 58px);
+      line-height: 1.2;
+      letter-spacing: .01em;
+      text-shadow: 0 2px 14px rgba(255,255,255,.9);
+      z-index: 40;
+    }
+    .overlay-rect {
+      position: absolute;
+      border: 6px solid var(--accent);
+      border-radius: 14px;
+      box-shadow: 0 0 0 5px rgba(255,255,255,.75), 0 8px 22px rgba(37,99,235,.24);
+      z-index: 20;
+    }
+    .overlay-label {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 8px 22px rgba(17,24,39,.18);
+      z-index: 24;
+    }
+    .redaction {
+      position: absolute;
+      background: rgba(17,24,39,.98);
+      border-radius: 7px;
+      z-index: 30;
+    }
+    .redaction.blur {
+      background: rgba(17,24,39,.50);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .overlay-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; z-index: 22; pointer-events: none; }
+    #subtitle {
+      position: absolute;
+      left: 7%; right: 7%; bottom: 5.5%;
+      min-height: 1.3em;
+      padding: .22em .55em .30em;
+      border-radius: .34em;
+      color: #fff;
+      background: rgba(17,24,39,.54);
+      text-align: center;
+      font-weight: 650;
+      line-height: 1.35;
+      letter-spacing: .01em;
+      text-shadow: -2px -2px 0 #111827, 2px -2px 0 #111827, -2px 2px 0 #111827, 2px 2px 0 #111827;
+      white-space: pre-line;
+      z-index: 100;
+      opacity: 0;
+    }
+    .card-scene {
+      position: absolute;
+      left: 9%; right: 9%; top: 12%; bottom: 19%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 34px;
+      padding: 7%;
+      border-radius: 36px;
+      background: #fff;
+      box-shadow: 0 28px 80px rgba(17,24,39,.14);
+    }
+    .card-kicker { color: var(--accent); font-size: 30px; font-weight: 750; letter-spacing: .05em; }
+    .card-title { font-size: 66px; line-height: 1.16; font-weight: 800; }
+    .card-body { font-size: 38px; line-height: 1.55; color: #374151; white-space: pre-line; }
+    .card-list { margin: 0; padding-left: 1.2em; font-size: 38px; line-height: 1.65; color: #1f2937; }
+    .badge {
+      position: absolute; right: 5%; top: 5%;
+      padding: 12px 22px; border-radius: 999px;
+      background: rgba(37,99,235,.10); color: var(--accent);
+      font-size: 26px; font-weight: 700;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <div id="visualRoot"></div>
+    <div id="subtitle"></div>
+  </div>
+<script>
+(() => {
+  const state = {
+    timeline: null,
+    currentSceneId: null,
+    currentScene: null,
+    mediaGroup: null,
+    media: null,
+    mediaReady: Promise.resolve(),
+  };
+  const stage = document.getElementById('stage');
+  const visualRoot = document.getElementById('visualRoot');
+  const subtitleEl = document.getElementById('subtitle');
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  const lerp = (a, b, p) => a + (b - a) * p;
+
+  async function loadTimeline() {
+    const response = await fetch('../work/timeline.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Unable to load timeline.json: ${response.status}`);
+    const timeline = await response.json();
+    state.timeline = timeline;
+    const { width, height } = timeline.canvas;
+    document.documentElement.style.setProperty('--frame-width', `${width}px`);
+    document.documentElement.style.setProperty('--frame-height', `${height}px`);
+    const visual = timeline.style?.visual || {};
+    document.documentElement.style.setProperty('--bg', visual.background || '#f4f6f8');
+    document.documentElement.style.setProperty('--fg', visual.foreground || '#111827');
+    document.documentElement.style.setProperty('--accent', visual.accent || '#2563eb');
+    document.documentElement.style.setProperty('--danger', visual.danger || '#dc2626');
+    const subtitle = timeline.style?.subtitles || {};
+    subtitleEl.style.fontFamily = subtitle.font || 'Noto Sans CJK SC, PingFang SC, Microsoft YaHei, sans-serif';
+    subtitleEl.style.fontSize = `${subtitle.fontSize || 52}px`;
+    subtitleEl.style.bottom = `${subtitle.bottomMargin || 72}px`;
+    window.finalVideo = { scenes: timeline.scenes, totalDuration: timeline.total_duration };
+    await document.fonts.ready;
+    return timeline;
+  }
+
+  function findScene(time) {
+    const scenes = state.timeline.scenes || [];
+    const exact = scenes.find(scene => time >= scene.start && time < scene.end);
+    if (exact) return exact;
+    for (let index = scenes.length - 1; index >= 0; index -= 1) {
+      if (time >= scenes[index].start) return scenes[index];
+    }
+    return scenes[0] || null;
+  }
+
+  function findSubtitle(time) {
+    const cues = state.timeline.subtitles || [];
+    return cues.find(cue => time >= cue.start && time < cue.end) || null;
+  }
+
+  function mediaRect(naturalW, naturalH) {
+    const width = state.timeline.canvas.width;
+    const height = state.timeline.canvas.height;
+    const visual = state.timeline.style?.visual || {};
+    const padding = Number(visual.imagePadding ?? 56);
+    const safeTop = Number(visual.safeTop ?? 64);
+    const safeBottom = Number(visual.safeBottom ?? 180);
+    const maxW = width - padding * 2;
+    const maxH = height - safeTop - safeBottom;
+    const scale = Math.min(maxW / naturalW, maxH / naturalH);
+    const w = naturalW * scale;
+    const h = naturalH * scale;
+    return { x: (width - w) / 2, y: safeTop + (maxH - h) / 2, w, h };
+  }
+
+  function addRedactions(group, redactions) {
+    const style = state.timeline.style?.privacy?.defaultRedactionStyle || 'solid';
+    for (const item of redactions || []) {
+      const el = document.createElement('div');
+      el.className = `redaction ${style === 'blur' ? 'blur' : ''}`;
+      el.style.left = `${Number(item.x || 0) * 100}%`;
+      el.style.top = `${Number(item.y || 0) * 100}%`;
+      el.style.width = `${Number(item.w || 0) * 100}%`;
+      el.style.height = `${Number(item.h || 0) * 100}%`;
+      group.appendChild(el);
+    }
+  }
+
+  function addOverlays(group, overlays) {
+    const arrows = [];
+    for (const item of overlays || []) {
+      if (item.type === 'rect') {
+        const el = document.createElement('div');
+        el.className = 'overlay-rect';
+        el.style.left = `${Number(item.x || 0) * 100}%`;
+        el.style.top = `${Number(item.y || 0) * 100}%`;
+        el.style.width = `${Number(item.w || 0) * 100}%`;
+        el.style.height = `${Number(item.h || 0) * 100}%`;
+        group.appendChild(el);
+        if (item.label) {
+          const label = document.createElement('div');
+          label.className = 'overlay-label';
+          label.textContent = item.label;
+          label.style.left = `${(Number(item.x || 0) + Number(item.w || 0) / 2) * 100}%`;
+          label.style.top = `${Math.max(0.04, Number(item.y || 0)) * 100}%`;
+          group.appendChild(label);
+        }
+      } else if (item.type === 'label') {
+        const label = document.createElement('div');
+        label.className = 'overlay-label';
+        label.textContent = item.label || '';
+        label.style.left = `${Number(item.x || .5) * 100}%`;
+        label.style.top = `${Number(item.y || .5) * 100}%`;
+        group.appendChild(label);
+      } else if (item.type === 'arrow') {
+        arrows.push(item);
+      }
+    }
+    if (arrows.length) {
+      const ns = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('class', 'overlay-svg');
+      svg.setAttribute('viewBox', '0 0 1000 1000');
+      const defs = document.createElementNS(ns, 'defs');
+      const marker = document.createElementNS(ns, 'marker');
+      marker.setAttribute('id', 'arrowhead');
+      marker.setAttribute('markerWidth', '12');
+      marker.setAttribute('markerHeight', '8');
+      marker.setAttribute('refX', '10');
+      marker.setAttribute('refY', '4');
+      marker.setAttribute('orient', 'auto');
+      const polygon = document.createElementNS(ns, 'polygon');
+      polygon.setAttribute('points', '0 0, 12 4, 0 8');
+      polygon.setAttribute('fill', 'var(--accent)');
+      marker.appendChild(polygon); defs.appendChild(marker); svg.appendChild(defs);
+      for (const item of arrows) {
+        const line = document.createElementNS(ns, 'line');
+        line.setAttribute('x1', String(Number(item.x || 0) * 1000));
+        line.setAttribute('y1', String(Number(item.y || 0) * 1000));
+        line.setAttribute('x2', String(Number(item.x2 || .5) * 1000));
+        line.setAttribute('y2', String(Number(item.y2 || .5) * 1000));
+        line.setAttribute('stroke', 'var(--accent)');
+        line.setAttribute('stroke-width', '12');
+        line.setAttribute('stroke-linecap', 'round');
+        line.setAttribute('marker-end', 'url(#arrowhead)');
+        svg.appendChild(line);
+      }
+      group.appendChild(svg);
+    }
+  }
+
+  function addScreenTitle(scene) {
+    if (!scene.screen_text) return;
+    const title = document.createElement('div');
+    title.className = 'screen-title';
+    title.textContent = scene.screen_text;
+    visualRoot.appendChild(title);
+  }
+
+  function buildCardScene(scene) {
+    const card = scene.card || {};
+    const wrapper = document.createElement('section');
+    wrapper.className = 'card-scene';
+    if (card.badge) {
+      const badge = document.createElement('div'); badge.className = 'badge'; badge.textContent = card.badge; wrapper.appendChild(badge);
+    }
+    if (card.kicker) {
+      const kicker = document.createElement('div'); kicker.className = 'card-kicker'; kicker.textContent = card.kicker; wrapper.appendChild(kicker);
+    }
+    const title = document.createElement('div'); title.className = 'card-title'; title.textContent = card.title || scene.screen_text || scene.task || ''; wrapper.appendChild(title);
+    if (card.body) {
+      const body = document.createElement('div'); body.className = 'card-body'; body.textContent = card.body; wrapper.appendChild(body);
+    }
+    if (Array.isArray(card.items) && card.items.length) {
+      const list = document.createElement('ul'); list.className = 'card-list';
+      for (const text of card.items) { const li = document.createElement('li'); li.textContent = text; list.appendChild(li); }
+      wrapper.appendChild(list);
+    }
+    visualRoot.appendChild(wrapper);
+    state.mediaGroup = wrapper;
+    state.media = null;
+    state.mediaReady = Promise.resolve();
+  }
+
+  async function buildMediaScene(scene) {
+    const source = `../${scene.asset}`;
+    const group = document.createElement('div');
+    group.className = 'media-group media-shadow';
+    let media;
+    if (scene.kind === 'video') {
+      media = document.createElement('video');
+      media.muted = true; media.playsInline = true; media.preload = 'auto';
+      media.src = source;
+      state.mediaReady = new Promise((resolve, reject) => {
+        media.addEventListener('loadedmetadata', resolve, { once: true });
+        media.addEventListener('error', reject, { once: true });
+      });
+    } else {
+      media = document.createElement('img');
+      media.decoding = 'sync';
+      media.src = source;
+      state.mediaReady = new Promise((resolve, reject) => {
+        if (media.complete && media.naturalWidth) resolve();
+        else {
+          media.addEventListener('load', resolve, { once: true });
+          media.addEventListener('error', reject, { once: true });
+        }
+      });
+    }
+    group.appendChild(media);
+    visualRoot.appendChild(group);
+    state.mediaGroup = group;
+    state.media = media;
+    await state.mediaReady;
+    const naturalW = scene.kind === 'video' ? media.videoWidth : media.naturalWidth;
+    const naturalH = scene.kind === 'video' ? media.videoHeight : media.naturalHeight;
+    const rect = mediaRect(naturalW || 16, naturalH || 9);
+    Object.assign(group.style, { left: `${rect.x}px`, top: `${rect.y}px`, width: `${rect.w}px`, height: `${rect.h}px` });
+    addOverlays(group, scene.overlays || []);
+    addRedactions(group, scene.redactions || []);
+  }
+
+  async function ensureScene(scene) {
+    if (state.currentSceneId === scene.id) return;
+    visualRoot.innerHTML = '';
+    state.currentSceneId = scene.id;
+    state.currentScene = scene;
+    state.mediaGroup = null;
+    state.media = null;
+    if (scene.kind === 'card' || !scene.asset) buildCardScene(scene);
+    else await buildMediaScene(scene);
+    addScreenTitle(scene);
+  }
+
+  async function seekVideo(media, target) {
+    if (!media || Math.abs(media.currentTime - target) < 0.015) return;
+    await new Promise((resolve) => {
+      const done = () => resolve();
+      media.addEventListener('seeked', done, { once: true });
+      media.currentTime = Math.max(0, target);
+      setTimeout(resolve, 1200);
+    });
+    media.pause();
+  }
+
+  function applyMotion(scene, time) {
+    if (!state.mediaGroup) return;
+    const progress = clamp((time - scene.start) / Math.max(.001, scene.end - scene.start), 0, 1);
+    const motion = scene.motion || { type: 'none' };
+    const startScale = Number(motion.start_scale ?? 1);
+    const endScale = Number(motion.end_scale ?? (motion.type === 'none' ? 1 : 1.06));
+    const scale = lerp(startScale, endScale, progress);
+    let tx = 0, ty = 0;
+    if (motion.type === 'pan_left') tx = lerp(18, -18, progress);
+    if (motion.type === 'pan_right') tx = lerp(-18, 18, progress);
+    if (motion.type === 'pan_up') ty = lerp(18, -18, progress);
+    if (motion.type === 'pan_down') ty = lerp(-18, 18, progress);
+    const focusX = clamp(Number(motion.focus_x ?? .5), 0, 1);
+    const focusY = clamp(Number(motion.focus_y ?? .5), 0, 1);
+    state.mediaGroup.style.transformOrigin = `${focusX * 100}% ${focusY * 100}%`;
+    state.mediaGroup.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  }
+
+  function renderSubtitle(time) {
+    const cue = findSubtitle(time);
+    if (!cue) {
+      subtitleEl.textContent = '';
+      subtitleEl.style.opacity = '0';
+      return;
+    }
+    subtitleEl.textContent = cue.text || cue.plain_text || '';
+    subtitleEl.style.opacity = '1';
+  }
+
+  window.seekTo = async function seekTo(time) {
+    await window.__readyPromise;
+    const t = clamp(Number(time || 0), 0, state.timeline.total_duration || 0);
+    const scene = findScene(t);
+    if (!scene) return { scene: null, time: t };
+    await ensureScene(scene);
+    if (scene.kind === 'video' && state.media) {
+      await seekVideo(state.media, Number(scene.source_start || 0) + (t - scene.start));
+    }
+    applyMotion(scene, t);
+    renderSubtitle(t);
+    return { scene: scene.id, kind: scene.kind, time: t };
+  };
+
+  window.__readyPromise = loadTimeline();
+  window.__readyPromise.then(() => window.seekTo(0)).catch(error => console.error(error));
+})();
+</script>
+</body>
+</html>

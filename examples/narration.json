@@ -1,0 +1,18 @@
+{
+  "title": "示例银行卡激活教程",
+  "language": "zh-CN",
+  "scenes": [
+    {
+      "id": "scene-001",
+      "section_id": "section-002",
+      "text": "先打开银行官方应用，使用已经注册的账户登录。",
+      "pause_after": 0.25
+    },
+    {
+      "id": "scene-002",
+      "section_id": "section-003",
+      "text": "进入卡片管理页面后，找到 Activate Card，并按照页面提示核对卡片信息。",
+      "pause_after": 0.25
+    }
+  ]
+}

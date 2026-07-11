@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bank Card Tutorial Storyboard",
+  "type": "object",
+  "required": [
+    "version",
+    "scenes"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "narration_scene_id",
+          "kind",
+          "task"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "narration_scene_id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "image",
+              "video",
+              "card"
+            ]
+          },
+          "asset": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "task": {
+            "type": "string"
+          },
+          "screen_text": {
+            "type": "string"
+          },
+          "start_offset": {
+            "type": "number",
+            "minimum": 0
+          },
+          "end_offset": {
+            "type": "number",
+            "minimum": 0
+          },
+          "source_start": {
+            "type": "number",
+            "minimum": 0
+          },
+          "motion": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "none",
+                  "zoom_in",
+                  "focus",
+                  "pan_left",
+                  "pan_right",
+                  "pan_up",
+                  "pan_down"
+                ]
+              },
+              "start_scale": {
+                "type": "number",
+                "minimum": 0.5,
+                "maximum": 3
+              },
+              "end_scale": {
+                "type": "number",
+                "minimum": 0.5,
+                "maximum": 3
+              },
+              "focus_x": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "focus_y": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          },
+          "overlays": {
+            "type": "array"
+          },
+          "redactions": {
+            "type": "array"
+          },
+          "source_claim_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "card": {
+            "type": "object"
+          },
+          "fact_check_exempt_reason": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

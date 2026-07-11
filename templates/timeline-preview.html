@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>时间线预览</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #0f172a; color: #e5e7eb; font-family: system-ui, "PingFang SC", sans-serif; }
+    .app { display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 100vh; }
+    .main { padding: 24px; display: flex; flex-direction: column; gap: 18px; align-items: center; }
+    .viewport { width: min(100%, 1180px); aspect-ratio: var(--ratio, 16 / 9); background: #020617; border-radius: 18px; overflow: hidden; box-shadow: 0 24px 70px rgba(0,0,0,.38); }
+    iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .controls { width: min(100%, 1180px); background: #111827; border: 1px solid #263244; border-radius: 16px; padding: 16px; }
+    .row { display: flex; align-items: center; gap: 12px; }
+    button, select, input { accent-color: #60a5fa; }
+    button { border: 0; border-radius: 10px; background: #2563eb; color: white; padding: 10px 18px; font-weight: 700; cursor: pointer; }
+    input[type=range] { flex: 1; }
+    .time { min-width: 150px; font-variant-numeric: tabular-nums; color: #cbd5e1; }
+    .sidebar { border-left: 1px solid #243044; padding: 20px; background: #111827; overflow: auto; }
+    .sidebar h2 { margin-top: 0; }
+    .scene { padding: 12px; border: 1px solid #334155; border-radius: 12px; margin-bottom: 10px; cursor: pointer; }
+    .scene.active { border-color: #60a5fa; background: rgba(37,99,235,.14); }
+    .scene .meta { color: #94a3b8; font-size: 12px; margin-top: 5px; }
+    textarea { width: 100%; min-height: 110px; background: #0f172a; color: #e5e7eb; border: 1px solid #334155; border-radius: 10px; padding: 10px; }
+    .save { width: 100%; margin-top: 12px; }
+    .status { margin-top: 10px; color: #93c5fd; min-height: 1.2em; }
+    @media (max-width: 900px) { .app { grid-template-columns: 1fr; } .sidebar { border-left: 0; border-top: 1px solid #243044; } }
+  </style>
+</head>
+<body>
+<div class="app">
+  <main class="main">
+    <div class="viewport" id="viewport"><iframe id="player" src="../renders/final-player.html?preview=1"></iframe></div>
+    <div class="controls">
+      <div class="row">
+        <button id="play">播放</button>
+        <span class="time" id="time">00:00.000 / 00:00.000</span>
+        <select id="speed"><option>1</option><option>1.25</option><option>1.5</option><option>2</option></select>
+        <label>音量 <input id="volume" type="range" min="0" max="1" step="0.05" value="1" /></label>
+      </div>
+      <div class="row" style="margin-top:12px"><input id="seek" type="range" min="0" max="1" step="0.001" value="0" /></div>
+      <audio id="audio" preload="auto"></audio>
+    </div>
+  </main>
+  <aside class="sidebar">
+    <h2>时间线审核</h2>
+    <div id="scenes"></div>
+    <label><input id="approved" type="checkbox" /> 已确认画面、字幕、配音和隐私遮挡</label>
+    <p>审核备注</p>
+    <textarea id="notes" placeholder="记录需要修改的场景、时间点和原因"></textarea>
+    <button class="save" id="save">保存审核结果</button>
+    <div class="status" id="status"></div>
+  </aside>
+</div>
+<script>
+const iframe = document.getElementById('player');
+const audio = document.getElementById('audio');
+const play = document.getElementById('play');
+const seek = document.getElementById('seek');
+const speed = document.getElementById('speed');
+const volume = document.getElementById('volume');
+const timeEl = document.getElementById('time');
+const scenesEl = document.getElementById('scenes');
+let timeline;
+let raf;
+
+const fmt = s => {
+  s = Math.max(0, Number(s || 0));
+  const m = Math.floor(s / 60), sec = s - m * 60;
+  return `${String(m).padStart(2,'0')}:${sec.toFixed(3).padStart(6,'0')}`;
+};
+async function init() {
+  timeline = await fetch('../work/timeline.json', {cache:'no-store'}).then(r => r.json());
+  audio.src = `../${timeline.audio}`;
+  seek.max = timeline.total_duration;
+  document.getElementById('viewport').style.setProperty('--ratio', `${timeline.canvas.width} / ${timeline.canvas.height}`);
+  scenesEl.innerHTML = timeline.scenes.map(s => `<div class="scene" data-id="${s.id}" data-start="${s.start}"><strong>${s.screen_text || s.task || s.id}</strong><div class="meta">${fmt(s.start)} 至 ${fmt(s.end)} · ${s.kind}</div></div>`).join('');
+  scenesEl.querySelectorAll('.scene').forEach(el => el.addEventListener('click', () => { audio.currentTime = Number(el.dataset.start); sync(true); }));
+  await new Promise(resolve => iframe.addEventListener('load', resolve, {once:true}));
+  await iframe.contentWindow.__readyPromise;
+  sync(true);
+}
+async function sync(force=false) {
+  if (!timeline) return;
+  const t = Number(audio.currentTime || seek.value || 0);
+  seek.value = t;
+  timeEl.textContent = `${fmt(t)} / ${fmt(timeline.total_duration)}`;
+  await iframe.contentWindow.seekTo(t);
+  const current = timeline.scenes.find(s => t >= s.start && t < s.end);
+  scenesEl.querySelectorAll('.scene').forEach(el => el.classList.toggle('active', current && el.dataset.id === current.id));
+  if (!audio.paused) raf = requestAnimationFrame(() => sync());
+}
+play.addEventListener('click', async () => { if (audio.paused) { await audio.play(); play.textContent='暂停'; sync(); } else { audio.pause(); play.textContent='播放'; cancelAnimationFrame(raf); } });
+audio.addEventListener('ended', () => { play.textContent='播放'; cancelAnimationFrame(raf); sync(true); });
+seek.addEventListener('input', () => { audio.currentTime = Number(seek.value); sync(true); });
+speed.addEventListener('change', () => { audio.playbackRate = Number(speed.value); });
+volume.addEventListener('input', () => { audio.volume = Number(volume.value); });
+document.getElementById('save').addEventListener('click', async () => {
+  const payload = { approved: document.getElementById('approved').checked, approved_by: 'user', notes: document.getElementById('notes').value, saved_at: new Date().toISOString() };
+  const response = await fetch('/api/save-timeline-review', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+  document.getElementById('status').textContent = response.ok ? '已保存到 work/timeline-review.json' : `保存失败：${response.status}`;
+});
+init().catch(err => { document.body.innerHTML = `<pre style="color:white;padding:24px">${String(err.stack || err)}</pre>`; });
+</script>
+</body>
+</html>

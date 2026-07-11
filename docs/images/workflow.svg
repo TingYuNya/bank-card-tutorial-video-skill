@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="520" viewBox="0 0 1440 520">
+  <defs><filter id="s"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0F172A" flood-opacity=".09"/></filter></defs>
+  <rect width="1440" height="520" rx="28" fill="#F8FAFC"/>
+  <text x="70" y="72" font-family="Arial,'Noto Sans SC',sans-serif" font-size="34" font-weight="800" fill="#0F172A">从 Markdown 到成片</text>
+  <text x="70" y="112" font-family="Arial,'Noto Sans SC',sans-serif" font-size="20" fill="#64748B">每一步都有可检查的中间产物，减少事实错误、隐私泄露和画面错配。</text>
+  <g font-family="Arial,'Noto Sans SC',sans-serif" text-anchor="middle">
+    <g transform="translate(55 175)"><rect width="220" height="180" rx="22" fill="#FFFFFF" filter="url(#s)"/><circle cx="110" cy="54" r="27" fill="#DBEAFE"/><text x="110" y="64" font-size="30" font-weight="800" fill="#2563EB">1</text><text x="110" y="112" font-size="22" font-weight="750" fill="#0F172A">解析输入</text><text x="110" y="144" font-size="16" fill="#64748B">Markdown 与本地图片</text></g>
+    <path d="M287 265h48" stroke="#94A3B8" stroke-width="5" stroke-linecap="round"/><path d="M328 252l18 13-18 13" fill="none" stroke="#94A3B8" stroke-width="5"/>
+    <g transform="translate(350 175)"><rect width="220" height="180" rx="22" fill="#FFFFFF" filter="url(#s)"/><circle cx="110" cy="54" r="27" fill="#FEE2E2"/><text x="110" y="64" font-size="30" font-weight="800" fill="#DC2626">2</text><text x="110" y="112" font-size="22" font-weight="750" fill="#0F172A">内容审校</text><text x="110" y="144" font-size="16" fill="#64748B">事实核验与隐私检查</text></g>
+    <path d="M582 265h48" stroke="#94A3B8" stroke-width="5" stroke-linecap="round"/><path d="M623 252l18 13-18 13" fill="none" stroke="#94A3B8" stroke-width="5"/>
+    <g transform="translate(645 175)"><rect width="220" height="180" rx="22" fill="#FFFFFF" filter="url(#s)"/><circle cx="110" cy="54" r="27" fill="#EDE9FE"/><text x="110" y="64" font-size="30" font-weight="800" fill="#7C3AED">3</text><text x="110" y="112" font-size="22" font-weight="750" fill="#0F172A">分镜审核</text><text x="110" y="144" font-size="16" fill="#64748B">画面、文案与来源绑定</text></g>
+    <path d="M877 265h48" stroke="#94A3B8" stroke-width="5" stroke-linecap="round"/><path d="M918 252l18 13-18 13" fill="none" stroke="#94A3B8" stroke-width="5"/>
+    <g transform="translate(940 175)"><rect width="220" height="180" rx="22" fill="#FFFFFF" filter="url(#s)"/><circle cx="110" cy="54" r="27" fill="#D1FAE5"/><text x="110" y="64" font-size="30" font-weight="800" fill="#059669">4</text><text x="110" y="112" font-size="22" font-weight="750" fill="#0F172A">配音与时间线</text><text x="110" y="144" font-size="16" fill="#64748B">字幕、画面和音频对齐</text></g>
+    <path d="M1172 265h48" stroke="#94A3B8" stroke-width="5" stroke-linecap="round"/><path d="M1213 252l18 13-18 13" fill="none" stroke="#94A3B8" stroke-width="5"/>
+    <g transform="translate(1235 175)"><rect width="150" height="180" rx="22" fill="#0F172A" filter="url(#s)"/><circle cx="75" cy="54" r="27" fill="#2563EB"/><text x="75" y="64" font-size="30" font-weight="800" fill="#FFFFFF">5</text><text x="75" y="112" font-size="22" font-weight="750" fill="#FFFFFF">输出</text><text x="75" y="144" font-size="16" fill="#CBD5E1">MP4 与验收报告</text></g>
+  </g>
+  <rect x="70" y="405" width="1300" height="58" rx="16" fill="#EFF6FF"/>
+  <text x="720" y="442" text-anchor="middle" font-family="Arial,'Noto Sans SC',sans-serif" font-size="19" font-weight="650" fill="#1D4ED8">分镜确认前不进入时间线，时间线确认前不渲染最终成片</text>
+</svg>

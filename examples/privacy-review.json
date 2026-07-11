@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "asset": "source/assets/001-login.png",
+      "reviewed": true,
+      "contains_sensitive_data": true,
+      "notes": "示例坐标，需要按真实图片重新检查",
+      "redactions": [
+        {"x": 0.12, "y": 0.18, "w": 0.54, "h": 0.08, "label": "card_number"}
+      ]
+    }
+  ]
+}
