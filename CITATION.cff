@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this project, cite the repository and retain the upstream attribution in NOTICE.md."
+title: "Bank Card Tutorial Video Skill"
+type: software
+authors:
+  - family-names: "TingYuNya"
+repository-code: "https://github.com/TingYuNya/bank-card-tutorial-video-skill"
+url: "https://github.com/TingYuNya/bank-card-tutorial-video-skill"
+version: "0.1.0"
+date-released: "2026-07-11"
+license: "Apache-2.0"
