@@ -70,12 +70,14 @@ const fmt = s => {
   const m = Math.floor(s / 60), sec = s - m * 60;
   return `${String(m).padStart(2,'0')}:${sec.toFixed(3).padStart(6,'0')}`;
 };
+const HTML_ESCAPE = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPE[char]);
 async function init() {
   timeline = await fetch('../work/timeline.json', {cache:'no-store'}).then(r => r.json());
   audio.src = `../${timeline.audio}`;
   seek.max = timeline.total_duration;
   document.getElementById('viewport').style.setProperty('--ratio', `${timeline.canvas.width} / ${timeline.canvas.height}`);
-  scenesEl.innerHTML = timeline.scenes.map(s => `<div class="scene" data-id="${s.id}" data-start="${s.start}"><strong>${s.screen_text || s.task || s.id}</strong><div class="meta">${fmt(s.start)} 至 ${fmt(s.end)} · ${s.kind}</div></div>`).join('');
+  scenesEl.innerHTML = timeline.scenes.map(s => `<div class="scene" data-id="${escapeHtml(s.id)}" data-start="${escapeHtml(s.start)}"><strong>${escapeHtml(s.screen_text || s.task || s.id)}</strong><div class="meta">${fmt(s.start)} 至 ${fmt(s.end)} · ${escapeHtml(s.kind)}</div></div>`).join('');
   scenesEl.querySelectorAll('.scene').forEach(el => el.addEventListener('click', () => { audio.currentTime = Number(el.dataset.start); sync(true); }));
   await new Promise(resolve => iframe.addEventListener('load', resolve, {once:true}));
   await iframe.contentWindow.__readyPromise;
@@ -101,7 +103,12 @@ document.getElementById('save').addEventListener('click', async () => {
   const response = await fetch('/api/save-timeline-review', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
   document.getElementById('status').textContent = response.ok ? '已保存到 work/timeline-review.json' : `保存失败：${response.status}`;
 });
-init().catch(err => { document.body.innerHTML = `<pre style="color:white;padding:24px">${String(err.stack || err)}</pre>`; });
+init().catch(err => {
+  const pre = document.createElement('pre');
+  pre.style.cssText = 'color:white;padding:24px';
+  pre.textContent = String(err.stack || err);
+  document.body.replaceChildren(pre);
+});
 </script>
 </body>
 </html>

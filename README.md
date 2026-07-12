@@ -560,8 +560,10 @@ ElevenLabs 可以直接返回字符级时间。Azure Speech 可以使用 `WordBo
 
 1. Python 3.11 与 3.12 源码编译。
 2. 核心解析、配置合并、路径安全和项目初始化单元测试。
-3. JSON 文件解析检查。
-4. README 使用的 SVG 素材格式检查。
+3. Codex Skill 元数据、渲染守卫、人工审批和审核页转义测试。
+4. 自包含示例素材与内容契约验证。
+5. JSON 文件解析检查。
+6. README 与示例使用的 SVG 素材格式检查。
 
 这些检查不调用付费 TTS，也不会上传任何教程素材。完整成片测试仍需在装有 FFmpeg、Chromium 和本地 API Key 的环境执行。
 

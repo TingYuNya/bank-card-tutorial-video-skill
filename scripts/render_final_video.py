@@ -7,8 +7,6 @@ import threading
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright
-
 from serve_preview import PreviewHandler
 from utils import (
     ensure_project_dirs,
@@ -18,6 +16,7 @@ from utils import (
     require_binary,
     run,
 )
+from validate_project import validate_project
 
 
 def start_server(project: Path) -> tuple[ThreadingHTTPServer, threading.Thread, int]:
@@ -38,7 +37,16 @@ def verify_approvals(project: Path, approval_mode: str) -> None:
         if data.get("approved") is not True:
             raise RuntimeError(f"Review is not approved: {path}")
         if approval_mode == "user" and data.get("approved_by") not in {"user", "human"}:
-            print(f"[warning] {name} approved_by={data.get('approved_by')!r} while approvalMode=user")
+            raise RuntimeError(f"{name} must be approved by a user or human")
+
+
+def require_render_validation(project: Path, config_path: Path | None = None) -> None:
+    errors, warnings = validate_project(project, "render", config_path)
+    for warning in warnings:
+        print(f"[warning] {warning}")
+    if errors:
+        details = "\n".join(f"- {error}" for error in errors)
+        raise RuntimeError(f"Render validation failed:\n{details}")
 
 
 def main() -> int:
@@ -55,8 +63,10 @@ def main() -> int:
     args = parser.parse_args()
 
     project = args.project.resolve()
+    config_path = args.config.resolve() if args.config else None
+    config = load_config(project, config_path)
+    require_render_validation(project, config_path)
     paths = ensure_project_dirs(project)
-    config = load_config(project, args.config.resolve() if args.config else None)
     timeline = load_json(paths["work"] / "timeline.json")
     width, height, dpr = parse_ratio(config)
     fps = int(args.fps or timeline.get("fps") or config.get("fps", 30))
@@ -95,6 +105,8 @@ def main() -> int:
     print(f"[render] frames={frame_count} format={frame_format} crf={crf} preset={preset}")
 
     try:
+        from playwright.sync_api import sync_playwright
+
         with sync_playwright() as p:
             launch_args = {"headless": True}
             if args.chrome_executable:

@@ -4,16 +4,16 @@
 
 打开银行官方应用，使用已经注册的账户登录。
 
-![登录页面](images/01-login.png)
+![登录页面](images/01-login.svg)
 
 ## 激活卡片
 
 进入卡片管理页面，找到 Activate Card，并按照页面要求核对卡片信息。
 
-![激活入口](images/02-activate.png)
+![激活入口](images/02-activate.svg)
 
 ## 添加还款账户
 
 进入 Payments 页面，添加用于还款的银行账户。输入账户信息前，确认当前网络和设备可信。
 
-![还款页面](images/03-payment.png)
+![还款页面](images/03-payment.svg)

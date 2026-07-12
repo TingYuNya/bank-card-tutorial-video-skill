@@ -32,6 +32,8 @@
 <script>
 let storyboard, narration, facts, privacy;
 const byId = (items, key='id') => Object.fromEntries((items || []).map(item => [item[key], item]));
+const HTML_ESCAPE = {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'};
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => HTML_ESCAPE[char]);
 async function init(){
   [storyboard,narration,facts,privacy] = await Promise.all([
     fetch('../work/storyboard.json',{cache:'no-store'}).then(r=>r.json()),
@@ -42,14 +44,14 @@ async function init(){
   const narr = byId(narration.scenes);
   const claims = byId(facts.claims);
   const privacyByAsset = byId(privacy.assets,'asset');
-  document.getElementById('summary').innerHTML = `<strong>${narration.title || '未命名教程'}</strong><div style="margin-top:8px;color:#64748b">${storyboard.scenes.length} 个分镜，${facts.claims.length} 条事实核验，${privacy.assets.length} 张图片已进入隐私检查清单。</div>`;
+  document.getElementById('summary').innerHTML = `<strong>${escapeHtml(narration.title || '未命名教程')}</strong><div style="margin-top:8px;color:#64748b">${storyboard.scenes.length} 个分镜，${facts.claims.length} 条事实核验，${privacy.assets.length} 张图片已进入隐私检查清单。</div>`;
   document.getElementById('cards').innerHTML = storyboard.scenes.map((scene,index)=>{
     const n = narr[scene.narration_scene_id] || {};
-    const claimTags = (scene.source_claim_ids || []).map(id=>{ const c=claims[id]||{}; return `<span class="tag">${id} · ${c.status || 'missing'}</span>`; }).join('');
+    const claimTags = (scene.source_claim_ids || []).map(id=>{ const c=claims[id]||{}; return `<span class="tag">${escapeHtml(id)} · ${escapeHtml(c.status || 'missing')}</span>`; }).join('');
     const p = privacyByAsset[scene.asset];
     const privacyWarning = scene.asset && (!p || p.reviewed !== true) ? `<div class="warning">该素材尚未完成隐私检查</div>` : '';
-    const media = scene.asset ? `<img src="../${scene.asset}" alt="" />` : `<div class="placeholder">${scene.kind === 'card' ? '信息卡场景' : '没有主素材'}</div>`;
-    return `<article class="card" data-id="${scene.id}"><div class="media">${media}</div><div><div class="meta">${String(index+1).padStart(2,'0')} · ${scene.id} · ${scene.kind || 'image'}</div><h2 style="margin:0">${scene.screen_text || scene.task || '未填写屏幕文案'}</h2><div class="narration">${n.text || '缺少对应配音文本'}</div><div><span class="tag">任务：${scene.task || '未填写'}</span><span class="tag">动作：${scene.motion?.type || 'none'}</span>${claimTags}</div>${privacyWarning}<p>审核备注</p><textarea data-note placeholder="标注按钮位置、图片选择、事实表述、隐私遮挡或节奏问题"></textarea><div class="decision"><label><input type="radio" name="decision-${scene.id}" value="approved" /> 通过</label><label><input type="radio" name="decision-${scene.id}" value="changes" /> 需修改</label></div></div></article>`;
+    const media = scene.asset ? `<img src="../${escapeHtml(scene.asset)}" alt="" />` : `<div class="placeholder">${scene.kind === 'card' ? '信息卡场景' : '没有主素材'}</div>`;
+    return `<article class="card" data-id="${escapeHtml(scene.id)}"><div class="media">${media}</div><div><div class="meta">${String(index+1).padStart(2,'0')} · ${escapeHtml(scene.id)} · ${escapeHtml(scene.kind || 'image')}</div><h2 style="margin:0">${escapeHtml(scene.screen_text || scene.task || '未填写屏幕文案')}</h2><div class="narration">${escapeHtml(n.text || '缺少对应配音文本')}</div><div><span class="tag">任务：${escapeHtml(scene.task || '未填写')}</span><span class="tag">动作：${escapeHtml(scene.motion?.type || 'none')}</span>${claimTags}</div>${privacyWarning}<p>审核备注</p><textarea data-note placeholder="标注按钮位置、图片选择、事实表述、隐私遮挡或节奏问题"></textarea><div class="decision"><label><input type="radio" name="decision-${escapeHtml(scene.id)}" value="approved" /> 通过</label><label><input type="radio" name="decision-${escapeHtml(scene.id)}" value="changes" /> 需修改</label></div></div></article>`;
   }).join('');
 }
 document.getElementById('save').addEventListener('click', async()=>{

@@ -2,13 +2,25 @@
   "version": 1,
   "assets": [
     {
-      "asset": "source/assets/001-login.png",
+      "asset": "source/assets/001-01-login.svg",
       "reviewed": true,
-      "contains_sensitive_data": true,
-      "notes": "示例坐标，需要按真实图片重新检查",
-      "redactions": [
-        {"x": 0.12, "y": 0.18, "w": 0.54, "h": 0.08, "label": "card_number"}
-      ]
+      "contains_sensitive_data": false,
+      "notes": "虚构登录页面，不包含真实账户信息",
+      "redactions": []
+    },
+    {
+      "asset": "source/assets/002-02-activate.svg",
+      "reviewed": true,
+      "contains_sensitive_data": false,
+      "notes": "虚构卡片，仅展示演示后四位",
+      "redactions": []
+    },
+    {
+      "asset": "source/assets/003-03-payment.svg",
+      "reviewed": true,
+      "contains_sensitive_data": false,
+      "notes": "虚构还款页面，不包含真实银行账户信息",
+      "redactions": []
     }
   ]
 }

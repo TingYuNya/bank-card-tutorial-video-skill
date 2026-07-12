@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480">
+  <rect width="720" height="480" rx="28" fill="#f4f6f8"/>
+  <rect x="110" y="58" width="500" height="364" rx="26" fill="#ffffff" stroke="#d7dee8" stroke-width="4"/>
+  <text x="150" y="118" font-family="Arial, sans-serif" font-size="30" fill="#111827">Payments</text>
+  <text x="150" y="164" font-family="Arial, sans-serif" font-size="20" fill="#64748b">使用虚构数据添加还款账户</text>
+  <rect x="150" y="196" width="420" height="54" rx="12" fill="#eef2f7"/>
+  <text x="172" y="230" font-family="Arial, sans-serif" font-size="20" fill="#64748b">Routing number · DEMO</text>
+  <rect x="150" y="270" width="420" height="54" rx="12" fill="#eef2f7"/>
+  <text x="172" y="304" font-family="Arial, sans-serif" font-size="20" fill="#64748b">Account number · •••• 5678</text>
+  <rect x="150" y="348" width="180" height="50" rx="14" fill="#2563eb"/>
+  <text x="240" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#ffffff">添加账户</text>
+</svg>

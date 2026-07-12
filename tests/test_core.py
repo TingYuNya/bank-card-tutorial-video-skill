@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -12,7 +14,9 @@ SCRIPTS = ROOT / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from init_project import parse_markdown, parse_target  # noqa: E402
+from render_final_video import require_render_validation  # noqa: E402
 from utils import deep_merge, normalize_asset_path, parse_ratio  # noqa: E402
+from validate_project import check_reviews, validate_project  # noqa: E402
 
 
 class MarkdownParserTests(unittest.TestCase):
@@ -34,6 +38,27 @@ class MarkdownParserTests(unittest.TestCase):
 
     def test_parse_target_supports_angle_brackets_and_url_encoding(self) -> None:
         self.assertEqual(parse_target("<images/a%20b.png>"), "images/a b.png")
+
+    def test_example_input_references_existing_assets(self) -> None:
+        example = ROOT / "examples" / "input.md"
+        sections = parse_markdown(example.read_text(encoding="utf-8"))
+        targets = [
+            block["target"]
+            for section in sections
+            for block in section["blocks"]
+            if block["type"] == "image"
+        ]
+        self.assertTrue(targets)
+        for target in targets:
+            self.assertTrue((example.parent / target).exists(), target)
+
+
+class SkillMetadataTests(unittest.TestCase):
+    def test_skill_name_is_codex_compatible(self) -> None:
+        content = (ROOT / "SKILL.md").read_text(encoding="utf-8")
+        match = re.search(r"^name:\s*(.+)$", content, re.MULTILINE)
+        self.assertIsNotNone(match)
+        self.assertRegex(match.group(1).strip(), r"^[a-z0-9-]+$")
 
 
 class ConfigurationTests(unittest.TestCase):
@@ -93,6 +118,60 @@ class ProjectInitializationTests(unittest.TestCase):
             self.assertTrue((project / manifest["assets"][0]["path"]).exists())
             self.assertTrue((project / "work" / "fact-check.json").exists())
             self.assertTrue((project / "work" / "privacy-review.json").exists())
+
+    def test_example_contracts_pass_content_validation(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            project = Path(tmp) / "project"
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(SCRIPTS / "init_project.py"),
+                    "--input",
+                    str(ROOT / "examples" / "input.md"),
+                    "--project",
+                    str(project),
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            for name in ["fact-check.json", "privacy-review.json", "narration.json", "storyboard.json"]:
+                shutil.copyfile(ROOT / "examples" / name, project / "work" / name)
+            errors, _ = validate_project(project, "content")
+            self.assertEqual(errors, [])
+
+
+class RenderGuardTests(unittest.TestCase):
+    def test_render_validation_blocks_incomplete_project(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(RuntimeError, "Render validation failed"):
+                require_render_validation(Path(tmp))
+
+    def test_user_approval_mode_rejects_agent_approval(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            project = Path(tmp)
+            work = project / "work"
+            work.mkdir()
+            payload = {"approved": True, "approved_by": "agent"}
+            for name in ["storyboard-review.json", "timeline-review.json"]:
+                (work / name).write_text(json.dumps(payload), encoding="utf-8")
+            errors: list[str] = []
+            warnings: list[str] = []
+            check_reviews(project, {"approvalMode": "user"}, errors, warnings)
+            self.assertEqual(len(errors), 2)
+            self.assertEqual(warnings, [])
+
+
+class ReviewTemplateSecurityTests(unittest.TestCase):
+    def test_dynamic_review_content_is_html_escaped(self) -> None:
+        storyboard = (ROOT / "templates" / "storyboard-audit.html").read_text(encoding="utf-8")
+        timeline = (ROOT / "templates" / "timeline-preview.html").read_text(encoding="utf-8")
+        self.assertIn("const escapeHtml", storyboard)
+        self.assertIn("${escapeHtml(narration.title", storyboard)
+        self.assertIn("${escapeHtml(scene.screen_text", storyboard)
+        self.assertIn("const escapeHtml", timeline)
+        self.assertIn("${escapeHtml(s.screen_text", timeline)
+        self.assertNotIn("document.body.innerHTML", timeline)
 
 
 if __name__ == "__main__":

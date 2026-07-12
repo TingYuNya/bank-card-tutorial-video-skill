@@ -195,7 +195,7 @@ def check_reviews(project: Path, config: dict[str, Any], errors: list[str], warn
         if data.get("approved") is not True:
             add(errors, f"Review not approved: work/{name}")
         if mode == "user" and data.get("approved_by") not in {"user", "human"}:
-            warnings.append(f"{name} approvalMode=user but approved_by={data.get('approved_by')!r}")
+            add(errors, f"{name} approvalMode=user requires approved_by=user or human")
 
 
 def check_render_inputs(project: Path, errors: list[str], warnings: list[str]) -> None:
@@ -211,6 +211,29 @@ def check_render_inputs(project: Path, errors: list[str], warnings: list[str]) -
             add(errors, f"Missing render input: {path.relative_to(project)}")
 
 
+def validate_project(
+    project: Path,
+    phase: str = "content",
+    config_path: Path | None = None,
+) -> tuple[list[str], list[str]]:
+    if phase not in {"initialized", "content", "render"}:
+        raise ValueError(f"Unsupported validation phase: {phase}")
+    project = project.resolve()
+    config = load_config(project, config_path.resolve() if config_path else None)
+    errors: list[str] = []
+    warnings: list[str] = []
+
+    check_initialized(project, errors, warnings)
+    if phase in {"content", "render"}:
+        check_fact_check(project, config, errors, warnings)
+        check_privacy(project, config, errors, warnings)
+        check_narration_storyboard(project, errors, warnings)
+    if phase == "render":
+        check_reviews(project, config, errors, warnings)
+        check_render_inputs(project, errors, warnings)
+    return errors, warnings
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate a tutorial video project.")
     parser.add_argument("--project", required=True, type=Path)
@@ -219,19 +242,7 @@ def main() -> int:
     parser.add_argument("--allow-warnings", action="store_true")
     args = parser.parse_args()
 
-    project = args.project.resolve()
-    config = load_config(project, args.config.resolve() if args.config else None)
-    errors: list[str] = []
-    warnings: list[str] = []
-
-    check_initialized(project, errors, warnings)
-    if args.phase in {"content", "render"}:
-        check_fact_check(project, config, errors, warnings)
-        check_privacy(project, config, errors, warnings)
-        check_narration_storyboard(project, errors, warnings)
-    if args.phase == "render":
-        check_reviews(project, config, errors, warnings)
-        check_render_inputs(project, errors, warnings)
+    errors, warnings = validate_project(args.project, args.phase, args.config)
 
     for warning in warnings:
         print(f"[warning] {warning}")
