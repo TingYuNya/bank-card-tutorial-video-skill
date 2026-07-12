@@ -4,6 +4,8 @@
 
 测试日期：2026-07-11
 
+补充验证日期：2026-07-12
+
 ## 已执行
 
 - Python 3.13 环境下完成全部脚本 AST 解析与 `compileall`。
@@ -40,6 +42,10 @@ The public repository package also includes automated checks for:
 - Configuration deep merge and aspect-ratio parsing.
 - Project path traversal rejection.
 - Project initialization and local asset copying.
+- Codex Skill metadata validation.
+- Render-time fact, privacy, input, and human-approval guards.
+- Review-page HTML escaping checks.
+- Self-contained example asset and contract validation.
 - JSON parsing and SVG XML validation.
 
 These checks run without paid TTS requests and without uploading tutorial assets.

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480">
+  <rect width="720" height="480" rx="28" fill="#f4f6f8"/>
+  <rect x="180" y="52" width="360" height="376" rx="28" fill="#ffffff" stroke="#d7dee8" stroke-width="4"/>
+  <circle cx="360" cy="126" r="34" fill="#2563eb"/>
+  <text x="360" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#111827">示例银行账户</text>
+  <rect x="230" y="238" width="260" height="52" rx="12" fill="#eef2f7"/>
+  <text x="250" y="272" font-family="Arial, sans-serif" font-size="20" fill="#64748b">用户名</text>
+  <rect x="230" y="308" width="260" height="56" rx="14" fill="#2563eb"/>
+  <text x="360" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#ffffff">登录</text>
+</svg>

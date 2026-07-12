@@ -5,7 +5,7 @@
       "id": "visual-001",
       "narration_scene_id": "scene-001",
       "kind": "image",
-      "asset": "source/assets/001-01-login.png",
+      "asset": "source/assets/001-01-login.svg",
       "task": "展示登录入口",
       "screen_text": "登录银行官方应用",
       "motion": {
@@ -23,7 +23,7 @@
       "id": "visual-002",
       "narration_scene_id": "scene-002",
       "kind": "image",
-      "asset": "source/assets/002-02-activate.png",
+      "asset": "source/assets/002-02-activate.svg",
       "task": "圈出激活入口",
       "screen_text": "选择 Activate Card",
       "motion": {

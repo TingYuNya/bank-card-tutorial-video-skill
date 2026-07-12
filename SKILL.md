@@ -1,5 +1,5 @@
 ---
-name: bank-card-tutorial-video:教程成片
+name: bank-card-tutorial-video
 description: 将包含正文与图片的 Markdown 银行卡开卡教程，处理为经过事实核验、隐私检查、配音、字幕、分镜审核、时间线预览和最终验收的 MP4 成片。适用于银行卡开卡、激活、绑卡、还款、账单与账户设置教程。触发词：银行卡教程成片、开卡视频教程、Markdown做视频、图文教程配音、银行卡教程剪辑
 ---
 
@@ -18,6 +18,15 @@ description: 将包含正文与图片的 Markdown 银行卡开卡教程，处理
 - 字幕、配音、分镜、事实核验和验收报告等中间产物。
 
 本 Skill 采用“文档分析、事实核验、分镜审核、时间线预览、最终渲染、抽帧验收”的工作流。流程设计参考 `chengfeng-videocut-skills` 的审核页、时间线预览、固定画布和逐帧渲染思路，并针对纯 Markdown、图片素材和 AI 配音场景重构。
+
+## 运行前提
+
+- Python 3.11 或更高版本。
+- FFmpeg 与 ffprobe。
+- Playwright Chromium。
+- ElevenLabs、OpenAI 或 Azure Speech 中至少一个可用的 TTS 提供商。
+
+安装 Skill 只会复制工作流文件，不会自动安装这些运行依赖。开始项目前先按照 `docs/QUICKSTART.md` 创建虚拟环境并运行 `scripts/check_env.py`。
 
 ## 强制原则
 
@@ -546,6 +555,8 @@ python scripts/validate_project.py \
 python scripts/render_final_video.py \
   --project /absolute/path/to/project
 ```
+
+渲染脚本会再次执行 `render` 阶段验证。即使直接调用渲染命令，未解决的高风险事实、未完成的隐私检查或缺少人工审批也会阻止输出。
 
 渲染流程：
 
